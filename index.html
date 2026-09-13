@@ -7,230 +7,211 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
 <style>
-  :root {
-    --color-bg: #F4F6F2;
-    --color-card: #FFFFFF;
-    --color-ink: #1B1D1B;
-    --color-muted: #666B63;
-    --color-border: #E4E6E0;
-    --color-primary: #1F6F54;
-    --color-primary-ink: #FFFFFF;
-    --color-star-inactive: #D9DBD4;
-    --font-display: 'Fraunces', Georgia, serif;
-    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
-    --radius-card: 20px;
-  }
+:root {
+  --color-bg: #F4F6F2;
+  --color-card: #FFFFFF;
+  --color-ink: #1B1D1B;
+  --color-muted: #666B63;
+  --color-border: #E4E6E0;
+  --color-primary: #1F6F54;
+  --color-star-inactive: #D9DBD4;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+}
 
-  * { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
-  body {
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-bg);
-    font-family: var(--font-body);
-    color: var(--color-ink);
-    padding: 24px;
-  }
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  padding: 24px;
+}
 
-  .card {
-    position: relative;
-    width: 100%;
-    max-width: 420px;
-    background: var(--color-card);
-    border-radius: var(--radius-card);
-    padding: 44px 32px 32px;
-    overflow: hidden;
-    box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 24px 48px -28px rgba(0,0,0,.35);
-  }
+.card {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  padding: 44px 32px 32px;
+  background: var(--color-card);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 24px 48px -28px rgba(0,0,0,.35);
+}
 
-  .card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 6px;
-    background: var(--color-primary);
-  }
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 6px;
+  background: var(--color-primary);
+}
 
-  .brand {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 22px;
-  }
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 22px;
+}
 
-  .brand img {
-    height: 42px;
-    object-fit: contain;
-  }
+.brand img {
+  height: 42px;
+  object-fit: contain;
+}
 
-  .brand .name {
-    font-weight: 600;
-    font-size: 14px;
-    color: var(--color-muted);
-  }
+.brand .name {
+  color: var(--color-muted);
+  font-size: 14px;
+  font-weight: 600;
+}
 
-  .heading {
-    font-family: var(--font-display);
-    font-size: 26px;
-    font-weight: 600;
-    line-height: 1.25;
-    text-align: center;
-    margin: 0 0 8px;
-  }
+.heading {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 26px;
+  line-height: 1.25;
+  text-align: center;
+}
 
-  .sub {
-    text-align: center;
-    color: var(--color-muted);
-    font-size: 15px;
-    line-height: 1.5;
-    margin: 0 0 30px;
-  }
+.sub {
+  margin: 0 0 30px;
+  color: var(--color-muted);
+  font-size: 15px;
+  line-height: 1.5;
+  text-align: center;
+}
 
-  .stars {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: center;
-    gap: 4px;
-  }
+.stars {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  gap: 4px;
+}
 
-  .star {
-    background: none;
-    border: none;
-    padding: 4px;
-    line-height: 0;
-    cursor: pointer;
-    transition: transform .15s ease;
-  }
+.star {
+  padding: 4px;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
 
-  .star svg {
-    width: 42px;
-    height: 42px;
-    fill: var(--color-star-inactive);
-    transition: fill .15s ease;
-  }
+.star svg {
+  width: 42px;
+  height: 42px;
+  fill: var(--color-star-inactive);
+  transition: fill .15s ease;
+}
 
-  .star:hover:not(:disabled) svg,
-  .star:hover:not(:disabled) ~ .star svg,
-  .star.is-selected svg {
-    fill: var(--color-primary);
-  }
+.star:hover:not(:disabled) svg,
+.star:hover:not(:disabled) ~ .star svg,
+.star.is-selected svg {
+  fill: var(--color-primary);
+}
 
-  .star:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
-    border-radius: 6px;
-  }
+.star:disabled {
+  cursor: default;
+}
 
-  .star:disabled {
-    cursor: default;
-  }
+.change-rating {
+  display: block;
+  margin: 14px auto 0;
+  border: 0;
+  background: none;
+  color: var(--color-muted);
+  cursor: pointer;
+  font-size: 13px;
+  text-decoration: underline;
+}
 
-  @media (prefers-reduced-motion: reduce) {
-    .star {
-      transition: none;
-    }
-  }
+.panel {
+  margin-top: 26px;
+}
 
-  .change-rating {
-    display: block;
-    text-align: center;
-    margin-top: 14px;
-    font-size: 13px;
-    color: var(--color-muted);
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
+.panel[hidden] {
+  display: none;
+}
 
-  .panel {
-    margin-top: 26px;
-  }
+.redirect-text {
+  margin: 0 0 14px;
+  color: var(--color-muted);
+  font-size: 15px;
+  text-align: center;
+}
 
-  .panel[hidden] {
-    display: none;
-  }
+.redirect-link {
+  display: block;
+  color: var(--color-primary);
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+}
 
-  .redirect-text {
-    text-align: center;
-    color: var(--color-muted);
-    font-size: 15px;
-    margin: 0 0 14px;
-  }
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
 
-  .redirect-link {
-    display: block;
-    text-align: center;
-    color: var(--color-primary);
-    font-weight: 600;
-    font-size: 15px;
-  }
+label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--color-muted);
+  font-size: 13px;
+}
 
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
+textarea {
+  width: 100%;
+  min-height: 96px;
+  padding: 11px 13px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: #FAFAF8;
+  color: var(--color-ink);
+  font: 15px var(--font-body);
+  resize: vertical;
+}
 
-  label {
-    font-size: 13px;
-    color: var(--color-muted);
-    display: block;
-    margin-bottom: 6px;
-  }
+textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
 
-  textarea {
-    width: 100%;
-    font-family: var(--font-body);
-    font-size: 15px;
-    padding: 11px 13px;
-    border: 1px solid var(--color-border);
-    border-radius: 10px;
-    background: #FAFAF8;
-    color: var(--color-ink);
-  }
+.submit-btn {
+  margin-top: 4px;
+  padding: 13px 16px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--color-primary);
+  color: white;
+  cursor: pointer;
+  font: 600 15px var(--font-body);
+}
 
-  textarea:focus {
-    outline: none;
-    border-color: var(--color-primary);
-  }
+.submit-btn:disabled {
+  cursor: default;
+  opacity: .6;
+}
 
-  textarea {
-    min-height: 96px;
-    resize: vertical;
-  }
-
-  .submit-btn {
-    margin-top: 4px;
-    padding: 13px 16px;
-    border: none;
-    border-radius: 10px;
-    background: var(--color-primary);
-    color: var(--color-primary-ink);
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: 15px;
-    cursor: pointer;
-  }
-
-  .thanks {
-    text-align: center;
-    color: var(--color-ink);
-    font-size: 15px;
-    line-height: 1.5;
-  }
+.thanks {
+  color: var(--color-ink);
+  font-size: 15px;
+  line-height: 1.5;
+  text-align: center;
+}
 </style>
 </head>
-<body>
 
+<body>
 <main class="card">
   <div class="brand" id="brand"></div>
 
@@ -238,20 +219,34 @@
   <p class="sub" id="subheading"></p>
 
   <div class="stars" id="starRow" role="radiogroup" aria-label="Bewertung in Sternen">
-    <button type="button" class="star" data-value="5" role="radio" aria-checked="false" aria-label="5 Sterne">
-      <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.6 1.6 7-6.2-3.9-6.2 3.9 1.6-7L2 9.5l7.1-.6L12 2z"/></svg>
+    <button type="button" class="star" data-value="5" aria-label="5 Sterne">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2l2.9 6.9 7.1.6-5.4 4.6 1.6 7-6.2-3.9-6.2 3.9 1.6-7L2 9.5l7.1-.6L12 2z"/>
+      </svg>
     </button>
-    <button type="button" class="star" data-value="4" role="radio" aria-checked="false" aria-label="4 Sterne">
-      <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.6 1.6 7-6.2-3.9-6.2 3.9 1.6-7L2 9.5l7.1-.6L12 2z"/></svg>
+
+    <button type="button" class="star" data-value="4" aria-label="4 Sterne">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2l2.9 6.9 7.1.6-5.4 4.6 1.6 7-6.2-3.9-6.2 3.9 1.6-7L2 9.5l7.1-.6L12 2z"/>
+      </svg>
     </button>
-    <button type="button" class="star" data-value="3" role="radio" aria-checked="false" aria-label="3 Sterne">
-      <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.6 1.6 7-6.2-3.9-6.2 3.9 1.6-7L2 9.5l7.1-.6L12 2z"/></svg>
+
+    <button type="button" class="star" data-value="3" aria-label="3 Sterne">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2l2.9 6.9 7.1.6-5.4 4.6 1.6 7-6.2-3.9-6.2 3.9 1.6-7L2 9.5l7.1-.6L12 2z"/>
+      </svg>
     </button>
-    <button type="button" class="star" data-value="2" role="radio" aria-checked="false" aria-label="2 Sterne">
-      <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.6 1.6 7-6.2-3.9-6.2 3.9 1.6-7L2 9.5l7.1-.6L12 2z"/></svg>
+
+    <button type="button" class="star" data-value="2" aria-label="2 Sterne">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2l2.9 6.9 7.1.6-5.4 4.6 1.6 7-6.2-3.9-6.2 3.9 1.6-7L2 9.5l7.1-.6L12 2z"/>
+      </svg>
     </button>
-    <button type="button" class="star" data-value="1" role="radio" aria-checked="false" aria-label="1 Stern">
-      <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.6 1.6 7-6.2-3.9-6.2 3.9 1.6-7L2 9.5l7.1-.6L12 2z"/></svg>
+
+    <button type="button" class="star" data-value="1" aria-label="1 Stern">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2l2.9 6.9 7.1.6-5.4 4.6 1.6 7-6.2-3.9-6.2 3.9 1.6-7L2 9.5l7.1-.6L12 2z"/>
+      </svg>
     </button>
   </div>
 
@@ -260,19 +255,25 @@
   </button>
 
   <div class="panel" id="panelPositive" hidden>
-    <p class="redirect-text">Danke! Sie werden zu Google weitergeleitet …</p>
+    <p class="redirect-text">
+      Danke! Sie werden zu Google weitergeleitet …
+    </p>
     <a class="redirect-link" id="manualRedirectLink" href="#">
       Falls sich nichts tut: hier klicken
     </a>
   </div>
 
   <div class="panel" id="panelFeedback" hidden>
-    <p class="redirect-text" style="margin-bottom:18px;"></p>
+    <p class="redirect-text">
+      Vielen Dank für Ihre Rückmeldung.
+    </p>
+
     <form id="feedbackForm">
       <div>
         <label for="fbMessage">Was ist Ihnen aufgefallen?</label>
         <textarea id="fbMessage" required></textarea>
       </div>
+
       <button type="submit" class="submit-btn" id="fbSubmit">
         Feedback senden
       </button>
@@ -280,7 +281,9 @@
   </div>
 
   <div class="panel" id="panelThanks" hidden>
-    <p class="thanks">Vielen Dank für Ihr offenes Feedback.</p>
+    <p class="thanks">
+      Vielen Dank für Ihr offenes Feedback.
+    </p>
   </div>
 </main>
 
@@ -292,7 +295,8 @@ const BUSINESSES = {
     primaryColor: "#1F6F54",
     heading: "Wie war Ihr Aufenthalt bei Crispy Kebab & FFC?",
     subheading: "Ihre Bewertung dauert nur ein paar Sekunden.",
-    googleReviewUrl: "https://search.google.com/local/writereview?placeid=ChIJIUZt8wIHnUcRSsVm-GM0MNU"
+    googleReviewUrl:
+      "https://search.google.com/local/writereview?placeid=ChIJIUZt8wIHnUcRSsVm-GM0MNU"
   },
 
   "cafe-sonnenblick": {
@@ -301,7 +305,8 @@ const BUSINESSES = {
     primaryColor: "#B5651D",
     heading: "Wie war Ihr Aufenthalt im {name}?",
     subheading: "Wir freuen uns auf Ihre Rückmeldung.",
-    googleReviewUrl: "https://search.google.com/local/writereview?placeid=PLACE_ID_CAFE"
+    googleReviewUrl:
+      "https://search.google.com/local/writereview?placeid=PLACE_ID_CAFE"
   },
 
   "friseur-glanz": {
@@ -310,62 +315,75 @@ const BUSINESSES = {
     primaryColor: "#5B4B8A",
     heading: "Wie war Ihr Aufenthalt bei {name}?",
     subheading: "Eine ehrliche Einschätzung hilft uns weiter.",
-    googleReviewUrl: "https://search.google.com/local/writereview?placeid=PLACE_ID_FRISEUR"
+    googleReviewUrl:
+      "https://search.google.com/local/writereview?placeid=PLACE_ID_FRISEUR"
   }
 };
 
 const params = new URLSearchParams(window.location.search);
-const bizKey = params.get('biz') || 'default';
+const bizKey = params.get("biz") || "default";
 const biz = BUSINESSES[bizKey] || BUSINESSES.default;
 
 document.title = `Bewertung – ${biz.name}`;
+
 document.documentElement.style.setProperty(
-  '--color-primary',
-  biz.primaryColor || '#1F6F54'
+  "--color-primary",
+  biz.primaryColor || "#1F6F54"
 );
 
-const brandEl = document.getElementById('brand');
+const brand = document.getElementById("brand");
 
 if (biz.logoUrl) {
-  brandEl.innerHTML =
+  brand.innerHTML =
     `<img src="${biz.logoUrl}" alt="${biz.name}"><span class="name">${biz.name}</span>`;
 } else {
-  brandEl.innerHTML = `<span class="name">${biz.name}</span>`;
+  brand.innerHTML = `<span class="name">${biz.name}</span>`;
 }
 
-document.getElementById('heading').textContent =
-  (biz.heading || 'Wie war Ihr Besuch bei {name}?')
-    .replace('{name}', biz.name);
+document.getElementById("heading").textContent =
+  (biz.heading || "Wie war Ihr Besuch bei {name}?")
+    .replace("{name}", biz.name);
 
-document.getElementById('subheading').textContent =
-  biz.subheading || '';
+document.getElementById("subheading").textContent =
+  biz.subheading || "";
 
-const starRow = document.getElementById('starRow');
-const stars = Array.from(starRow.querySelectorAll('.star'));
-const changeRatingBtn = document.getElementById('changeRating');
-const panelPositive = document.getElementById('panelPositive');
-const panelFeedback = document.getElementById('panelFeedback');
-const panelThanks = document.getElementById('panelThanks');
-const manualRedirectLink = document.getElementById('manualRedirectLink');
+const stars = Array.from(
+  document.querySelectorAll(".star")
+);
+
+const changeRatingButton =
+  document.getElementById("changeRating");
+
+const panelPositive =
+  document.getElementById("panelPositive");
+
+const panelFeedback =
+  document.getElementById("panelFeedback");
+
+const panelThanks =
+  document.getElementById("panelThanks");
+
+const manualRedirectLink =
+  document.getElementById("manualRedirectLink");
 
 manualRedirectLink.href = biz.googleReviewUrl;
 
 let selected = 0;
 let redirectTimer = null;
 
-stars.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const value = Number(btn.dataset.value);
+stars.forEach(star => {
+  star.addEventListener("click", () => {
+    const value = Number(star.dataset.value);
 
     selected = value;
-    applySelectionVisual(value);
+    applySelection(value);
     resetPanels();
 
-    stars.forEach(star => {
-      star.disabled = true;
+    stars.forEach(item => {
+      item.disabled = true;
     });
 
-    changeRatingBtn.hidden = false;
+    changeRatingButton.hidden = false;
 
     if (value >= 4) {
       panelPositive.hidden = false;
@@ -379,7 +397,7 @@ stars.forEach(btn => {
   });
 });
 
-changeRatingBtn.addEventListener('click', () => {
+changeRatingButton.addEventListener("click", () => {
   if (redirectTimer) {
     window.clearTimeout(redirectTimer);
   }
@@ -388,22 +406,26 @@ changeRatingBtn.addEventListener('click', () => {
 
   stars.forEach(star => {
     star.disabled = false;
-    star.classList.remove('is-selected');
-    star.setAttribute('aria-checked', 'false');
+    star.classList.remove("is-selected");
+    star.setAttribute("aria-checked", "false");
   });
 
-  changeRatingBtn.hidden = true;
+  changeRatingButton.hidden = true;
   resetPanels();
 });
 
-function applySelectionVisual(value) {
+function applySelection(value) {
   stars.forEach(star => {
     const starValue = Number(star.dataset.value);
 
-    star.classList.toggle('is-selected', starValue <= value);
+    star.classList.toggle(
+      "is-selected",
+      starValue <= value
+    );
+
     star.setAttribute(
-      'aria-checked',
-      starValue === value ? 'true' : 'false'
+      "aria-checked",
+      starValue === value ? "true" : "false"
     );
   });
 }
@@ -414,24 +436,23 @@ function resetPanels() {
   panelThanks.hidden = true;
 }
 
-document.getElementById('feedbackForm').addEventListener('submit', event => {
-  event.preventDefault();
+document
+  .getElementById("feedbackForm")
+  .addEventListener("submit", event => {
+    event.preventDefault();
 
-  const message = document.getElementById('fbMessage').value.trim();
+    const message =
+      document.getElementById("fbMessage").value.trim();
 
-  if (!message) {
-    return;
-  }
+    if (!message) {
+      return;
+    }
 
-  document.getElementById('fbSubmit').disabled = true;
-  showThanks();
-});
+    document.getElementById("fbSubmit").disabled = true;
 
-function showThanks() {
-  resetPanels();
-  panelThanks.hidden = false;
-}
+    resetPanels();
+    panelThanks.hidden = false;
+  });
 </script>
-
 </body>
 </html>
