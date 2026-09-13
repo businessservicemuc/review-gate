@@ -50,7 +50,9 @@
   .card::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0;
+    top: 0;
+    left: 0;
+    right: 0;
     height: 6px;
     background: var(--color-primary);
   }
@@ -63,7 +65,10 @@
     margin-bottom: 22px;
   }
 
-  .brand img { height: 42px; object-fit: contain; }
+  .brand img {
+    height: 42px;
+    object-fit: contain;
+  }
 
   .brand .name {
     font-weight: 600;
@@ -123,10 +128,14 @@
     border-radius: 6px;
   }
 
-  .star:disabled { cursor: default; }
+  .star:disabled {
+    cursor: default;
+  }
 
   @media (prefers-reduced-motion: reduce) {
-    .star { transition: none; }
+    .star {
+      transition: none;
+    }
   }
 
   .change-rating {
@@ -146,7 +155,9 @@
     margin-top: 26px;
   }
 
-  .panel[hidden] { display: none; }
+  .panel[hidden] {
+    display: none;
+  }
 
   .redirect-text {
     text-align: center;
@@ -176,7 +187,7 @@
     margin-bottom: 6px;
   }
 
-  input, textarea {
+  textarea {
     width: 100%;
     font-family: var(--font-body);
     font-size: 15px;
@@ -187,12 +198,15 @@
     color: var(--color-ink);
   }
 
-  input:focus, textarea:focus {
+  textarea:focus {
     outline: none;
     border-color: var(--color-primary);
   }
 
-  textarea { min-height: 96px; resize: vertical; }
+  textarea {
+    min-height: 96px;
+    resize: vertical;
+  }
 
   .submit-btn {
     margin-top: 4px;
@@ -206,8 +220,6 @@
     font-size: 15px;
     cursor: pointer;
   }
-
-  .submit-btn:disabled { opacity: .6; cursor: default; }
 
   .thanks {
     text-align: center;
@@ -243,15 +255,17 @@
     </button>
   </div>
 
-  <button type="button" class="change-rating" id="changeRating" hidden>Bewertung ändern</button>
+  <button type="button" class="change-rating" id="changeRating" hidden>
+    Bewertung ändern
+  </button>
 
-  <!-- 4-5 Sterne: Weiterleitung zu Google -->
   <div class="panel" id="panelPositive" hidden>
     <p class="redirect-text">Danke! Sie werden zu Google weitergeleitet …</p>
-    <a class="redirect-link" id="manualRedirectLink" href="#">Falls sich nichts tut: hier klicken</a>
+    <a class="redirect-link" id="manualRedirectLink" href="#">
+      Falls sich nichts tut: hier klicken
+    </a>
   </div>
 
-  <!-- 1-3 Sterne: privates Feedback-Formular -->
   <div class="panel" id="panelFeedback" hidden>
     <p class="redirect-text" style="margin-bottom:18px;"></p>
     <form id="feedbackForm">
@@ -259,7 +273,9 @@
         <label for="fbMessage">Was ist Ihnen aufgefallen?</label>
         <textarea id="fbMessage" required></textarea>
       </div>
-      <button type="submit" class="submit-btn" id="fbSubmit">Feedback senden</button>
+      <button type="submit" class="submit-btn" id="fbSubmit">
+        Feedback senden
+      </button>
     </form>
   </div>
 
@@ -269,71 +285,60 @@
 </main>
 
 <script>
-/* ============================================================
-   KONFIGURATION – hier pro Kunde/Business einen Eintrag anlegen.
-   Aufruf dann z. B. über: deine-domain.de/review-gate.html?biz=cafe-sonnenblick
-   Ohne Parameter (oder unbekannter Key) wird "default" geladen.
-   ============================================================ */
 const BUSINESSES = {
-
   default: {
     name: "Crispy Kebab & FFC",
-    logoUrl: "",                     // z.B. "https://.../logo.png" – leer lassen für Textlogo
+    logoUrl: "",
     primaryColor: "#1F6F54",
-    heading: "Wie war Ihr Aufenthalt bei Crispy Kebab & FFC ?",
+    heading: "Wie war Ihr Aufenthalt bei Crispy Kebab & FFC?",
     subheading: "Ihre Bewertung dauert nur ein paar Sekunden.",
-    // Google-Rezensionslink: über die Google Place-ID erzeugen
-    // https://search.google.com/local/writereview?placeid=DEINE_PLACE_ID
-    googleReviewUrl: "https://search.google.com/local/writereview?placeid=ChIJIUZt8wIHnUcRSsVm-GM0MNU",
-    // Ziel für negatives Feedback: entweder feedbackEmail (mailto) ODER feedbackWebhookUrl (POST)
-    feedbackEmail: "info@example.com",
-    feedbackWebhookUrl: ""           // z.B. Formspree-Endpoint; wenn gesetzt, hat Vorrang vor mailto
+    googleReviewUrl: "https://search.google.com/local/writereview?placeid=ChIJIUZt8wIHnUcRSsVm-GM0MNU"
   },
 
-  // BEISPIEL – anpassen oder löschen
   "cafe-sonnenblick": {
     name: "Café Sonnenblick",
     logoUrl: "",
     primaryColor: "#B5651D",
     heading: "Wie war Ihr Aufenthalt im {name}?",
     subheading: "Wir freuen uns auf Ihre Rückmeldung.",
-    googleReviewUrl: "https://search.google.com/local/writereview?placeid=PLACE_ID_CAFE",
-    feedbackEmail: "team@cafe-sonnenblick.example",
-    feedbackWebhookUrl: ""
+    googleReviewUrl: "https://search.google.com/local/writereview?placeid=PLACE_ID_CAFE"
   },
 
-  // BEISPIEL – anpassen oder löschen
   "friseur-glanz": {
     name: "Friseursalon Glanz",
     logoUrl: "",
     primaryColor: "#5B4B8A",
     heading: "Wie war Ihr Aufenthalt bei {name}?",
     subheading: "Eine ehrliche Einschätzung hilft uns weiter.",
-    googleReviewUrl: "https://search.google.com/local/writereview?placeid=PLACE_ID_FRISEUR",
-    feedbackEmail: "kontakt@friseur-glanz.example",
-    feedbackWebhookUrl: ""
+    googleReviewUrl: "https://search.google.com/local/writereview?placeid=PLACE_ID_FRISEUR"
   }
 };
 
-/* ============================================================
-   LOGIK – ab hier normalerweise nichts anpassen.
-   ============================================================ */
 const params = new URLSearchParams(window.location.search);
 const bizKey = params.get('biz') || 'default';
 const biz = BUSINESSES[bizKey] || BUSINESSES.default;
 
 document.title = `Bewertung – ${biz.name}`;
-document.documentElement.style.setProperty('--color-primary', biz.primaryColor || '#1F6F54');
+document.documentElement.style.setProperty(
+  '--color-primary',
+  biz.primaryColor || '#1F6F54'
+);
 
 const brandEl = document.getElementById('brand');
+
 if (biz.logoUrl) {
-  brandEl.innerHTML = `<img src="${biz.logoUrl}" alt="${biz.name}"><span class="name">${biz.name}</span>`;
+  brandEl.innerHTML =
+    `<img src="${biz.logoUrl}" alt="${biz.name}"><span class="name">${biz.name}</span>`;
 } else {
   brandEl.innerHTML = `<span class="name">${biz.name}</span>`;
 }
 
-document.getElementById('heading').textContent = (biz.heading || 'Wie war Ihr Besuch bei {name}?').replace('{name}', biz.name);
-document.getElementById('subheading').textContent = biz.subheading || '';
+document.getElementById('heading').textContent =
+  (biz.heading || 'Wie war Ihr Besuch bei {name}?')
+    .replace('{name}', biz.name);
+
+document.getElementById('subheading').textContent =
+  biz.subheading || '';
 
 const starRow = document.getElementById('starRow');
 const stars = Array.from(starRow.querySelectorAll('.star'));
@@ -342,6 +347,7 @@ const panelPositive = document.getElementById('panelPositive');
 const panelFeedback = document.getElementById('panelFeedback');
 const panelThanks = document.getElementById('panelThanks');
 const manualRedirectLink = document.getElementById('manualRedirectLink');
+
 manualRedirectLink.href = biz.googleReviewUrl;
 
 let selected = 0;
@@ -350,14 +356,20 @@ let redirectTimer = null;
 stars.forEach(btn => {
   btn.addEventListener('click', () => {
     const value = Number(btn.dataset.value);
+
     selected = value;
     applySelectionVisual(value);
     resetPanels();
-    stars.forEach(s => s.disabled = true);
+
+    stars.forEach(star => {
+      star.disabled = true;
+    });
+
     changeRatingBtn.hidden = false;
 
     if (value >= 4) {
       panelPositive.hidden = false;
+
       redirectTimer = window.setTimeout(() => {
         window.location.href = biz.googleReviewUrl;
       }, 1100);
@@ -368,18 +380,31 @@ stars.forEach(btn => {
 });
 
 changeRatingBtn.addEventListener('click', () => {
-  if (redirectTimer) window.clearTimeout(redirectTimer);
+  if (redirectTimer) {
+    window.clearTimeout(redirectTimer);
+  }
+
   selected = 0;
-  stars.forEach(s => { s.disabled = false; s.classList.remove('is-selected'); s.setAttribute('aria-checked', 'false'); });
+
+  stars.forEach(star => {
+    star.disabled = false;
+    star.classList.remove('is-selected');
+    star.setAttribute('aria-checked', 'false');
+  });
+
   changeRatingBtn.hidden = true;
   resetPanels();
 });
 
 function applySelectionVisual(value) {
-  stars.forEach(s => {
-    const v = Number(s.dataset.value);
-    s.classList.toggle('is-selected', v <= value);
-    s.setAttribute('aria-checked', v === value ? 'true' : 'false');
+  stars.forEach(star => {
+    const starValue = Number(star.dataset.value);
+
+    star.classList.toggle('is-selected', starValue <= value);
+    star.setAttribute(
+      'aria-checked',
+      starValue === value ? 'true' : 'false'
+    );
   });
 }
 
@@ -389,43 +414,18 @@ function resetPanels() {
   panelThanks.hidden = true;
 }
 
-document.getElementById('feedbackForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const submitBtn = document.getElementById('fbSubmit');
+document.getElementById('feedbackForm').addEventListener('submit', event => {
+  event.preventDefault();
+
   const message = document.getElementById('fbMessage').value.trim();
-  const emailField = document.getElementById('fbEmail');
-  const email = emailField ? emailField.value.trim() : '';
 
-  if (!message) return;
-  submitBtn.disabled = true;
-  submitBtn.textContent = "Wird gesendet …";
-
-  if (biz.feedbackWebhookUrl) {
-    try {
-      await fetch(biz.feedbackWebhookUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ business: biz.name, rating: selected, message, email })
-      });
-      showThanks();
-    } catch (err) {
-      // Fallback auf mailto, falls der Webhook nicht erreichbar ist
-      openMailFallback(message, email);
-      showThanks();
-    }
-  } else {
-    openMailFallback(message, email);
-    showThanks();
+  if (!message) {
+    return;
   }
-});
 
-function openMailFallback(message, email) {
-  const subject = encodeURIComponent(`Feedback (${selected} Stern${selected === 1 ? '' : 'e'}) – ${biz.name}`);
-  const body = encodeURIComponent(
-    `Bewertung: ${selected} Stern${selected === 1 ? '' : 'e'}\n\nNachricht:\n${message}\n\nAntwort-E-Mail: ${email || '(nicht angegeben)'}`
-  );
-  window.location.href = `mailto:${biz.feedbackEmail}?subject=${subject}&body=${body}`;
-}
+  document.getElementById('fbSubmit').disabled = true;
+  showThanks();
+});
 
 function showThanks() {
   resetPanels();
