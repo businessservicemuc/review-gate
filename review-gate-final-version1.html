@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bewertung abgeben</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-bg: #F4F6F2;
+    --color-card: #FFFFFF;
+    --color-ink: #1B1D1B;
+    --color-muted: #666B63;
+    --color-border: #E4E6E0;
+    --color-primary: #1F6F54;
+    --color-primary-ink: #FFFFFF;
+    --color-star-inactive: #D9DBD4;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+    --radius-card: 20px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg);
+    font-family: var(--font-body);
+    color: var(--color-ink);
+    padding: 24px;
+  }
+
+  .card {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    background: var(--color-card);
+    border-radius: var(--radius-card);
+    padding: 44px 32px 32px;
+    overflow: hidden;
+    box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 24px 48px -28px rgba(0,0,0,.35);
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: var(--color-primary);
+  }
+
+  .brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+
+  .brand img { height: 42px; object-fit: contain; }
+
+  .brand .name {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--color-muted);
+  }
+
+  .heading {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.25;
+    text-align: center;
+    margin: 0 0 8px;
+  }
+
+  .sub {
+    text-align: center;
+    color: var(--color-muted);
+    font-size: 15px;
+    line-height: 1.5;
+    margin: 0 0 30px;
+  }
+
+  .stars {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .star {
+    background: none;
+    border: none;
+    padding: 4px;
+    line-height: 0;
+    cursor: pointer;
+    transition: transform .15s ease;
+  }
+
+  .star svg {
+    width: 42px;
+    height: 42px;
+    fill: var(--color-star-inactive);
+    transition: fill .15s ease;
+  }
+
+  .star:hover:not(:disabled) svg,
+  .star:hover:not(:disabled) ~ .star svg,
+  .star.is-selected svg {
+    fill: var(--color-primary);
+  }
+
+  .star:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  .star:disabled { cursor: default; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .star { transition: none; }
+  }
+
+  .change-rating {
+    display: block;
+    text-align: center;
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--color-muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .panel {
+    margin-top: 26px;
+  }
+
+  .panel[hidden] { display: none; }
+
+  .redirect-text {
+    text-align: center;
+    color: var(--color-muted);
+    font-size: 15px;
+    margin: 0 0 14px;
+  }
+
+  .redirect-link {
+    display: block;
+    text-align: center;
+    color: var(--color-primary);
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  label {
+    font-size: 13px;
+    color: var(--color-muted);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  input, textarea {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 15px;
+    padding: 11px 13px;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background: #FAFAF8;
+    color: var(--color-ink);
+  }
+
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+  }
+
+  textarea { min-height: 96px; resize: vertical; }
+
+  .submit-btn {
+    margin-top: 4px;
+    padding: 13px 16px;
+    border: none;
+    border-radius: 10px;
+    background: var(--color-primary);
+    color: var(--color-primary-ink);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+  }
+
+  .submit-btn:disabled { opacity: .6; cursor: default; }
+
+  .thanks {
+    text-align: center;
+    color: var(--color-ink);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<main class="card">
+  <div class="brand" id="brand"></div>
+
+  <h1 class="heading" id="heading"></h1>
+  <p class="sub" id="subheading"></p>
+
+  <div class="stars" id="starRow" role="radiogroup" aria-label="Bewertung in Sternen">
+    <button type="button" class="star" data-value="5" role="radio" aria-checked="false" aria-label="5 Sterne">
+      <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.6 1.6 7-6.2-3.9-6.2 3.9 1.6-7L2 9.5l7.1-.6L12 2z"/></svg>
+    </button>
+    <button type="button" class="star" data-value="4" role="radio" aria-checked="false" aria-label="4 Sterne">
+      <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.6 1.6 7-6.2-3.9-6.2 3.9 1.6-7L2 9.5l7.1-.6L12 2z"/></svg>
+    </button>
+    <button type="button" class="star" data-value="3" role="radio" aria-checked="false" aria-label="3 Sterne">
+      <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.6 1.6 7-6.2-3.9-6.2 3.9 1.6-7L2 9.5l7.1-.6L12 2z"/></svg>
+    </button>
+    <button type="button" class="star" data-value="2" role="radio" aria-checked="false" aria-label="2 Sterne">
+      <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.6 1.6 7-6.2-3.9-6.2 3.9 1.6-7L2 9.5l7.1-.6L12 2z"/></svg>
+    </button>
+    <button type="button" class="star" data-value="1" role="radio" aria-checked="false" aria-label="1 Stern">
+      <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.6 1.6 7-6.2-3.9-6.2 3.9 1.6-7L2 9.5l7.1-.6L12 2z"/></svg>
+    </button>
+  </div>
+
+  <button type="button" class="change-rating" id="changeRating" hidden>Bewertung ändern</button>
+
+  <!-- 4-5 Sterne: Weiterleitung zu Google -->
+  <div class="panel" id="panelPositive" hidden>
+    <p class="redirect-text">Danke! Sie werden zu Google weitergeleitet …</p>
+    <a class="redirect-link" id="manualRedirectLink" href="#">Falls sich nichts tut: hier klicken</a>
+  </div>
+
+  <!-- 1-3 Sterne: privates Feedback-Formular -->
+  <div class="panel" id="panelFeedback" hidden>
+    <p class="redirect-text" style="margin-bottom:18px;"></p>
+    <form id="feedbackForm">
+      <div>
+        <label for="fbMessage">Was ist Ihnen aufgefallen?</label>
+        <textarea id="fbMessage" required></textarea>
+      </div>
+      <button type="submit" class="submit-btn" id="fbSubmit">Feedback senden</button>
+    </form>
+  </div>
+
+  <div class="panel" id="panelThanks" hidden>
+    <p class="thanks">Vielen Dank für Ihr offenes Feedback.</p>
+  </div>
+</main>
+
+<script>
+/* ============================================================
+   KONFIGURATION – hier pro Kunde/Business einen Eintrag anlegen.
+   Aufruf dann z. B. über: deine-domain.de/review-gate.html?biz=cafe-sonnenblick
+   Ohne Parameter (oder unbekannter Key) wird "default" geladen.
+   ============================================================ */
+const BUSINESSES = {
+
+  default: {
+    name: "Crispy Kebab & FFC",
+    logoUrl: "",                     // z.B. "https://.../logo.png" – leer lassen für Textlogo
+    primaryColor: "#1F6F54",
+    heading: "Wie war Ihr Aufenthalt bei Crispy Kebab & FFC ?",
+    subheading: "Ihre Bewertung dauert nur ein paar Sekunden.",
+    // Google-Rezensionslink: über die Google Place-ID erzeugen
+    // https://search.google.com/local/writereview?placeid=DEINE_PLACE_ID
+    googleReviewUrl: "https://search.google.com/local/writereview?placeid=ChIJIUZt8wIHnUcRSsVm-GM0MNU",
+    // Ziel für negatives Feedback: entweder feedbackEmail (mailto) ODER feedbackWebhookUrl (POST)
+    feedbackEmail: "info@example.com",
+    feedbackWebhookUrl: ""           // z.B. Formspree-Endpoint; wenn gesetzt, hat Vorrang vor mailto
+  },
+
+  // BEISPIEL – anpassen oder löschen
+  "cafe-sonnenblick": {
+    name: "Café Sonnenblick",
+    logoUrl: "",
+    primaryColor: "#B5651D",
+    heading: "Wie war Ihr Aufenthalt im {name}?",
+    subheading: "Wir freuen uns auf Ihre Rückmeldung.",
+    googleReviewUrl: "https://search.google.com/local/writereview?placeid=PLACE_ID_CAFE",
+    feedbackEmail: "team@cafe-sonnenblick.example",
+    feedbackWebhookUrl: ""
+  },
+
+  // BEISPIEL – anpassen oder löschen
+  "friseur-glanz": {
+    name: "Friseursalon Glanz",
+    logoUrl: "",
+    primaryColor: "#5B4B8A",
+    heading: "Wie war Ihr Aufenthalt bei {name}?",
+    subheading: "Eine ehrliche Einschätzung hilft uns weiter.",
+    googleReviewUrl: "https://search.google.com/local/writereview?placeid=PLACE_ID_FRISEUR",
+    feedbackEmail: "kontakt@friseur-glanz.example",
+    feedbackWebhookUrl: ""
+  }
+};
+
+/* ============================================================
+   LOGIK – ab hier normalerweise nichts anpassen.
+   ============================================================ */
+const params = new URLSearchParams(window.location.search);
+const bizKey = params.get('biz') || 'default';
+const biz = BUSINESSES[bizKey] || BUSINESSES.default;
+
+document.title = `Bewertung – ${biz.name}`;
+document.documentElement.style.setProperty('--color-primary', biz.primaryColor || '#1F6F54');
+
+const brandEl = document.getElementById('brand');
+if (biz.logoUrl) {
+  brandEl.innerHTML = `<img src="${biz.logoUrl}" alt="${biz.name}"><span class="name">${biz.name}</span>`;
+} else {
+  brandEl.innerHTML = `<span class="name">${biz.name}</span>`;
+}
+
+document.getElementById('heading').textContent = (biz.heading || 'Wie war Ihr Besuch bei {name}?').replace('{name}', biz.name);
+document.getElementById('subheading').textContent = biz.subheading || '';
+
+const starRow = document.getElementById('starRow');
+const stars = Array.from(starRow.querySelectorAll('.star'));
+const changeRatingBtn = document.getElementById('changeRating');
+const panelPositive = document.getElementById('panelPositive');
+const panelFeedback = document.getElementById('panelFeedback');
+const panelThanks = document.getElementById('panelThanks');
+const manualRedirectLink = document.getElementById('manualRedirectLink');
+manualRedirectLink.href = biz.googleReviewUrl;
+
+let selected = 0;
+let redirectTimer = null;
+
+stars.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const value = Number(btn.dataset.value);
+    selected = value;
+    applySelectionVisual(value);
+    resetPanels();
+    stars.forEach(s => s.disabled = true);
+    changeRatingBtn.hidden = false;
+
+    if (value >= 4) {
+      panelPositive.hidden = false;
+      redirectTimer = window.setTimeout(() => {
+        window.location.href = biz.googleReviewUrl;
+      }, 1100);
+    } else {
+      panelFeedback.hidden = false;
+    }
+  });
+});
+
+changeRatingBtn.addEventListener('click', () => {
+  if (redirectTimer) window.clearTimeout(redirectTimer);
+  selected = 0;
+  stars.forEach(s => { s.disabled = false; s.classList.remove('is-selected'); s.setAttribute('aria-checked', 'false'); });
+  changeRatingBtn.hidden = true;
+  resetPanels();
+});
+
+function applySelectionVisual(value) {
+  stars.forEach(s => {
+    const v = Number(s.dataset.value);
+    s.classList.toggle('is-selected', v <= value);
+    s.setAttribute('aria-checked', v === value ? 'true' : 'false');
+  });
+}
+
+function resetPanels() {
+  panelPositive.hidden = true;
+  panelFeedback.hidden = true;
+  panelThanks.hidden = true;
+}
+
+document.getElementById('feedbackForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const submitBtn = document.getElementById('fbSubmit');
+  const message = document.getElementById('fbMessage').value.trim();
+  const emailField = document.getElementById('fbEmail');
+  const email = emailField ? emailField.value.trim() : '';
+
+  if (!message) return;
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Wird gesendet …";
+
+  if (biz.feedbackWebhookUrl) {
+    try {
+      await fetch(biz.feedbackWebhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ business: biz.name, rating: selected, message, email })
+      });
+      showThanks();
+    } catch (err) {
+      // Fallback auf mailto, falls der Webhook nicht erreichbar ist
+      openMailFallback(message, email);
+      showThanks();
+    }
+  } else {
+    openMailFallback(message, email);
+    showThanks();
+  }
+});
+
+function openMailFallback(message, email) {
+  const subject = encodeURIComponent(`Feedback (${selected} Stern${selected === 1 ? '' : 'e'}) – ${biz.name}`);
+  const body = encodeURIComponent(
+    `Bewertung: ${selected} Stern${selected === 1 ? '' : 'e'}\n\nNachricht:\n${message}\n\nAntwort-E-Mail: ${email || '(nicht angegeben)'}`
+  );
+  window.location.href = `mailto:${biz.feedbackEmail}?subject=${subject}&body=${body}`;
+}
+
+function showThanks() {
+  resetPanels();
+  panelThanks.hidden = false;
+}
+</script>
+
+</body>
+</html>
